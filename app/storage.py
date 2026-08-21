@@ -10,7 +10,7 @@ def save_to_staging(files: List[UploadFile]) -> List[str]:
     for file in files:
         file_path = STAGING_DIR / file.filename
 
-        with open(file=file_path, mode="w") as buffer:
+        with open(file=file_path, mode="wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         saved_files.append(file.filename)
     return saved_files
