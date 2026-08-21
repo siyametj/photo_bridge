@@ -33,25 +33,28 @@ photo_bridge/
 ├── gui/
 │   └── streamlit_gui.py
 │
+├── photo_result/
+│   ├── client_device.jpeg
+│   └── server.png
+│
+├── LICENSE
+├── README.md
 ├── requirements.txt
-├── run_server.py
-└── README.md
+└── run_server.py
 ```
 
 ### `app/config.py`
 
-Contains the directory configuration.
+Controls the staging and final directories.
 
-By default:
+Default locations:
 
 ```text
 Staging: ~/Pictures/.client_image
 Final:   ~/Pictures
 ```
 
-Both directories are created automatically if they do not exist.
-
-You can also override them with:
+They can be overridden with:
 
 ```bash
 export STAGING_DIR=/path/to/staging
@@ -60,26 +63,21 @@ export FINAL_DIR=/path/to/final
 
 ### `app/main_api.py`
 
-Contains the FastAPI application and API routes.
+Contains the FastAPI application and the client-facing web interface. The `/` route serves the HTML upload GUI directly from FastAPI.
 
 ### `app/storage.py`
 
-Handles file operations:
-
-- Save uploads to staging
-- Get staged files
-- Accept files
-- Reject files
+Handles saving, listing, accepting, and rejecting staged photos.
 
 ### `gui/streamlit_gui.py`
 
-Provides the Streamlit interface for viewing and managing staged photos.
+Contains the server-side Streamlit management GUI.
 
 ### `run_server.py`
 
-The main backend entry point. It starts Uvicorn on port `8000`.
+Starts the FastAPI application through Uvicorn.
 
-## 🔌 API Endpoints
+# 🔌 API Endpoints
 
 ### `GET /`
 
@@ -112,7 +110,7 @@ Example response:
 }
 ```
 
-### `GET /pending`
+### `GET /pending-photos`
 
 Returns the files currently waiting in staging.
 
@@ -276,28 +274,6 @@ uvicorn app.main_api:app --reload
 
 The exact pinned dependency versions are available in `requirements.txt`.
 
-## ⚠️ Current Development Note
-
-The current Streamlit GUI source requests:
-
-```text
-GET /pending-photos
-```
-
-while the FastAPI backend currently exposes:
-
-```text
-GET /pending
-```
-
-These paths should be made consistent for the GUI's pending-photo list to work correctly.
-
-The backend API itself currently defines the pending route as:
-
-```text
-GET /pending
-```
-
 ## 🔐 Security Note
 
 This project is currently designed as a local/development photo bridge.
@@ -316,6 +292,19 @@ and the server listens on:
 
 Before exposing the application to an untrusted network, authentication, authorization, safer CORS configuration, filename validation, and other security controls should be added.
 
-## 📜 License
+### 📸 Screenshots
+
+The repository contains two example screenshots in `photo_result/`:
+
+```text
+photo_result/
+├── client_device.jpeg
+└── server.png
+```
+
+They show the two main sides of Photo Bridge: the client upload page and the server-side photo management GUI.
+
+# 📜 License
+
 
 This project is licensed under the terms of the [MIT License](LICENSE) - see the [MIT License](LICENSE)  file for details..
