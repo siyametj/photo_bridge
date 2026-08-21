@@ -18,7 +18,7 @@ def save_to_staging(files: List[UploadFile]) -> List[str]:
 def get_staged_files() -> List[str]:
     return [f.name for f in STAGING_DIR.iterdir() if f.is_file()]
 
-def accpet_file(file_name: str) -> bool:
+def accept_file(file_name: str) -> bool:
     source = STAGING_DIR / file_name
     destination = FINAL_DIR / file_name
 
